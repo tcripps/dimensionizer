@@ -1,0 +1,252 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1FF4BFC70AA9862D005280C6 /* Dimensionizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */; };
+		1FF4BFCD0AA98717005280C6 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FF4BFCB0AA98717005280C6 /* Info.plist */; };
+		1FF4BFD10AA9872B005280C6 /* English.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 1FF4BFCE0AA9872B005280C6 /* English.lproj */; };
+		1FF4BFD70AA98A78005280C6 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF4BFD60AA98A78005280C6 /* QuickTime.framework */; };
+		4F94F01707B3098F00AE9F13 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */; };
+		4F94F01807B3098F00AE9F13 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60288D86009E36CE0BCA0CAD /* ApplicationServices.framework */; };
+		4F94F01907B3098F00AE9F13 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60764980009F79710BCA0CAD /* Carbon.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
+		1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = Dimensionizer.c; sourceTree = "<group>"; };
+		1FF4BFCB0AA98717005280C6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FF4BFCE0AA9872B005280C6 /* English.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = English.lproj; sourceTree = "<group>"; };
+		1FF4BFD60AA98A78005280C6 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
+		1FF4C12D0AA99457005280C6 /* Dimensionizer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Dimensionizer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		60288D86009E36CE0BCA0CAD /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
+		60764980009F79710BCA0CAD /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4F94F01607B3098F00AE9F13 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F94F01707B3098F00AE9F13 /* CoreFoundation.framework in Frameworks */,
+				4F94F01807B3098F00AE9F13 /* ApplicationServices.framework in Frameworks */,
+				4F94F01907B3098F00AE9F13 /* Carbon.framework in Frameworks */,
+				1FF4BFD70AA98A78005280C6 /* QuickTime.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* SampleCMPlugin */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AFFE84173DC02AAC07 /* Source */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
+				19C28FB6FE9D52B211CA2CBB /* Products */,
+			);
+			name = SampleCMPlugin;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */,
+				60288D86009E36CE0BCA0CAD /* ApplicationServices.framework */,
+				60764980009F79710BCA0CAD /* Carbon.framework */,
+				1FF4BFD60AA98A78005280C6 /* QuickTime.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FF4BFCE0AA9872B005280C6 /* English.lproj */,
+				1FF4BFCB0AA98717005280C6 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AFFE84173DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		19C28FB6FE9D52B211CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1FF4C12D0AA99457005280C6 /* Dimensionizer.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4F94F01107B3098F00AE9F13 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4F94F01007B3098F00AE9F13 /* Dimensionizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F2B05ED08A02B3E0055E173 /* Build configuration list for PBXNativeTarget "Dimensionizer" */;
+			buildPhases = (
+				4F94F01107B3098F00AE9F13 /* Headers */,
+				4F94F01207B3098F00AE9F13 /* Resources */,
+				4F94F01407B3098F00AE9F13 /* Sources */,
+				4F94F01607B3098F00AE9F13 /* Frameworks */,
+				4F94F01A07B3098F00AE9F13 /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dimensionizer;
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = SampleCMPlugin;
+			productReference = 1FF4C12D0AA99457005280C6 /* Dimensionizer.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4F2B05F108A02B3E0055E173 /* Build configuration list for PBXProject "Dimensionizer" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 089C166AFE841209C02AAC07 /* SampleCMPlugin */;
+			projectDirPath = "";
+			targets = (
+				4F94F01007B3098F00AE9F13 /* Dimensionizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4F94F01207B3098F00AE9F13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FF4BFCD0AA98717005280C6 /* Info.plist in Resources */,
+				1FF4BFD10AA9872B005280C6 /* English.lproj in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		4F94F01A07B3098F00AE9F13 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4F94F01407B3098F00AE9F13 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FF4BFC70AA9862D005280C6 /* Dimensionizer.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4F2B05EE08A02B3E0055E173 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PRODUCT_NAME = Dimensionizer;
+				WRAPPER_EXTENSION = plugin;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		4F2B05EF08A02B3E0055E173 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				PRODUCT_NAME = Dimensionizer;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+		4F2B05F208A02B3E0055E173 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Debug;
+		};
+		4F2B05F308A02B3E0055E173 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F2B05ED08A02B3E0055E173 /* Build configuration list for PBXNativeTarget "Dimensionizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F2B05EE08A02B3E0055E173 /* Debug */,
+				4F2B05EF08A02B3E0055E173 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F2B05F108A02B3E0055E173 /* Build configuration list for PBXProject "Dimensionizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F2B05F208A02B3E0055E173 /* Debug */,
+				4F2B05F308A02B3E0055E173 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

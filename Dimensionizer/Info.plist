@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Dimensionizer</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.automaticlabs.dimensionizer</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleSignature</key>
+	<string>Plug</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CFPlugInDynamicRegisterFunction</key>
+	<string></string>
+	<key>CFPlugInDynamicRegistration</key>
+	<string>NO</string>
+	<key>CFPlugInFactories</key>
+	<dict>
+		<key>C3977923-7C8A-11D8-83AA-000A95BA4426</key>
+		<string>DimensionizerFactory</string>
+	</dict>
+	<key>CFPlugInTypes</key>
+	<dict>
+		<key>2F6522E9-3E66-11D5-80A7-003065B300BC</key>
+		<array>
+			<string>C3977923-7C8A-11D8-83AA-000A95BA4426</string>
+		</array>
+	</dict>
+	<key>CFPlugInUnloadFunction</key>
+	<string></string>
+</dict>
+</plist>
