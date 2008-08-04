@@ -3,26 +3,41 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1FDA325B0D59948300B4A587 /* Dimensionizer.plugin in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1FF4C12D0AA99457005280C6 /* Dimensionizer.plugin */; };
 		1FF4BFC70AA9862D005280C6 /* Dimensionizer.c in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */; };
-		1FF4BFCD0AA98717005280C6 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1FF4BFCB0AA98717005280C6 /* Info.plist */; };
 		1FF4BFD10AA9872B005280C6 /* English.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 1FF4BFCE0AA9872B005280C6 /* English.lproj */; };
 		1FF4BFD70AA98A78005280C6 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF4BFD60AA98A78005280C6 /* QuickTime.framework */; };
+		1FF674FE0D3DF1B400FC7C35 /* Dimensionizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FF674FD0D3DF1B400FC7C35 /* Dimensionizer.h */; };
 		4F94F01707B3098F00AE9F13 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */; };
 		4F94F01807B3098F00AE9F13 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60288D86009E36CE0BCA0CAD /* ApplicationServices.framework */; };
 		4F94F01907B3098F00AE9F13 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60764980009F79710BCA0CAD /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1FDA324A0D5993D300B4A587 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(HOME)/Library/Contextual Menu Items";
+			dstSubfolderSpec = 0;
+			files = (
+				1FDA325B0D59948300B4A587 /* Dimensionizer.plugin in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0AA1909FFE8422F4C02AAC07 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = Dimensionizer.c; sourceTree = "<group>"; };
-		1FF4BFCB0AA98717005280C6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		1FF4BFCB0AA98717005280C6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FF4BFCE0AA9872B005280C6 /* English.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = English.lproj; sourceTree = "<group>"; };
 		1FF4BFD60AA98A78005280C6 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
 		1FF4C12D0AA99457005280C6 /* Dimensionizer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Dimensionizer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FF674FD0D3DF1B400FC7C35 /* Dimensionizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dimensionizer.h; sourceTree = "<group>"; };
 		60288D86009E36CE0BCA0CAD /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
 		60764980009F79710BCA0CAD /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -77,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				1FF4BFC60AA9862D005280C6 /* Dimensionizer.c */,
+				1FF674FD0D3DF1B400FC7C35 /* Dimensionizer.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -96,6 +112,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FF674FE0D3DF1B400FC7C35 /* Dimensionizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +128,7 @@
 				4F94F01407B3098F00AE9F13 /* Sources */,
 				4F94F01607B3098F00AE9F13 /* Frameworks */,
 				4F94F01A07B3098F00AE9F13 /* Rez */,
+				1FDA324A0D5993D300B4A587 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -128,9 +146,11 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 4F2B05F108A02B3E0055E173 /* Build configuration list for PBXProject "Dimensionizer" */;
+			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* SampleCMPlugin */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				4F94F01007B3098F00AE9F13 /* Dimensionizer */,
 			);
@@ -142,7 +162,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FF4BFCD0AA98717005280C6 /* Info.plist in Resources */,
 				1FF4BFD10AA9872B005280C6 /* English.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +193,8 @@
 		4F2B05EE08A02B3E0055E173 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -183,6 +204,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = Dimensionizer;
+				VALID_ARCHS = "ppc64 ppc7400 ppc970 i386 x86_64 ppc";
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = YES;
 			};
@@ -211,17 +233,19 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
 			};
 			name = Debug;
 		};
 		4F2B05F308A02B3E0055E173 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
 			};
 			name = Release;
 		};
