@@ -27,10 +27,10 @@
 
 
 // The values of these constants MUST match those in the preference application.
-#define PRIMARY_OUTPUT_FORMAT_KEY CFSTR("ComHivelogicDimensionizerPrimaryOutputFormat")
-#define SECONDARY_OUTPUT_FORMAT_KEY CFSTR("ComHivelogicDimensionizerSecondaryOutputFormat")
-#define PRIMARY_CUSTOM_FORMAT CFSTR("ComHivelogicDimensionizerPrimaryCustomFormat")
-#define SECONDARY_CUSTOM_FORMAT CFSTR("ComHivelogicDimensionizerSecondaryCustomFormat")
+#define PRIMARY_OUTPUT_FORMAT CFSTR("primaryOutputFormat")
+#define SECONDARY_OUTPUT_FORMAT CFSTR("secondaryOutputFormat")
+#define PRIMARY_CUSTOM_FORMAT CFSTR("primaryCustomFormat")
+#define SECONDARY_CUSTOM_FORMAT CFSTR("secondaryCustomFormat")
 
 #define HEIGHT_TOKEN CFSTR("^__HEIGHT__^")
 #define WIDTH_TOKEN CFSTR("^__WIDTH__^")
@@ -51,7 +51,7 @@ enum OutputFormat {
 
 // Log levels
 enum LogLevel {
-    LogLevelVerbose,
+    LogLevelVerbose = 0,
     LogLevelDebug,
     LogLevelInfo,
     LogLevelWarn,

@@ -9,10 +9,10 @@
 #import <PreferencePanes/PreferencePanes.h>
 
 
-#define PRIMARY_OUTPUT_FORMAT_KEY @"ComHivelogicDimensionizerPrimaryOutputFormat"
-#define SECONDARY_OUTPUT_FORMAT_KEY @"ComHivelogicDimensionizerSecondaryOutputFormat"
-#define PRIMARY_CUSTOM_FORMAT @"ComHivelogicDimensionizerPrimaryCustomFormat"
-#define SECONDARY_CUSTOM_FORMAT @"ComHivelogicDimensionizerSecondaryCustomFormat"
+#define PRIMARY_OUTPUT_FORMAT @"primaryOutputFormat"
+#define SECONDARY_OUTPUT_FORMAT @"secondaryOutputFormat"
+#define PRIMARY_CUSTOM_FORMAT @"primaryCustomFormat"
+#define SECONDARY_CUSTOM_FORMAT @"secondaryCustomFormat"
 
 #define HEIGHT_TOKEN @"^__HEIGHT__^"
 #define WIDTH_TOKEN @"^__WIDTH__^"

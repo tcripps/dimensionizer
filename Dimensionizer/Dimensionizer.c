@@ -414,7 +414,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
             
             if (isMainCommandType) {
                 LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting primary output type preference.\n"));
-                preferredFormat = OutputFormatPreferenceForKey(PRIMARY_OUTPUT_FORMAT_KEY);
+                preferredFormat = OutputFormatPreferenceForKey(PRIMARY_OUTPUT_FORMAT);
                 if (preferredFormat == -1) {
                     theFormat = HTML;
                 } else {
@@ -422,7 +422,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
                 }
             } else {
                 LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting secondary output type preference.\n"));
-                preferredFormat = OutputFormatPreferenceForKey(SECONDARY_OUTPUT_FORMAT_KEY);
+                preferredFormat = OutputFormatPreferenceForKey(SECONDARY_OUTPUT_FORMAT);
                 if (preferredFormat == -1) {
                     theFormat = CSS;
                 } else {
@@ -977,12 +977,21 @@ static Boolean InsertCommandIntoCommandListWithOptionsSubmenu(CFStringRef comman
     }
     
     if ( gHasAttributeAndModifierKeys ) {
-        // Stick the attributes into the AERecord.
-        if (attributes != (MenuItemAttributes)NULL && attributes != 0) {
+        
+		if ((MenuItemAttributes)NULL == attributes) {
+			attributes = kMenuItemAttrSubmenuParentChoosable;
+		} else {
+			if (attributes != 0) { // We use 0 for the parent submenu item.
+				attributes |= kMenuItemAttrSubmenuParentChoosable;
+			}
+		}
+				
+        //if (attributes != (MenuItemAttributes)NULL && attributes != 0) {
+			// Stick the attributes into the AERecord.
             LogString(LogLevelVerbose, CFSTR("InsertCommandIntoCommandListWithOptionsSubmenu: Adding attributes to apple event record."));
             err = AEPutKeyPtr(&commandRecord, keyContextualMenuAttributes, typeSInt32, &attributes, sizeof(attributes));
             require_noerr(err, InsertCommandIntoCommandListWithOptionsSubmenu_fail );
-        }
+        //}
         
         // Stick the modifiers into the AERecord.
         if (modifiers != (UInt32)NULL && modifiers != 0) {
@@ -1076,6 +1085,11 @@ CantClearPasteboard:
 static int OutputFormatPreferenceForKey(const CFStringRef key) {
     int outputType = -1;
     
+	LogString(LogLevelDebug, CFSTR("OutputFormatPreferenceForKey: Reading output type preference for key: %@ and output type: %d.\n"), key, outputType);
+	
+	// Force preferences synchronization to make sure we have the latest preference values.
+	CFPreferencesAppSynchronize(kDimensionizerCMPBundleIdentifier);
+	
     // Look for the preference.
     CFPropertyListRef outputTypePref = CFPreferencesCopyAppValue(key, kDimensionizerCMPBundleIdentifier);
 
@@ -1238,28 +1252,28 @@ static void LogString(const enum LogLevel logLevel, CFStringRef formatString, ..
 	va_list argList;
     
     switch(logLevel) {
-        case 0:
+        case LogLevelVerbose:
             CFStringAppend(resultString, CFSTR("VERBOSE: "));
             break;
-        case 1:
+        case LogLevelDebug:
             CFStringAppend(resultString, CFSTR("DEBUG: "));
             break;
-        case 2:
+        case LogLevelInfo:
             CFStringAppend(resultString, CFSTR("INFO: "));
             break;
-        case 3:
+        case LogLevelWarn:
             CFStringAppend(resultString, CFSTR("WARNING: "));
             break;
-        case 4:
+        case LogLevelError:
             CFStringAppend(resultString, CFSTR("ERROR: "));
             break;
     }
 	
 	va_start(argList, formatString);
-	CFStringAppend(resultString, CFStringCreateWithFormatAndArguments(NULL, NULL, formatString, argList));
+	CFStringAppendFormatAndArguments(resultString, NULL, formatString, argList);
 	va_end(argList);
 	
-	data = CFStringCreateExternalRepresentation(NULL, resultString, CFStringGetSystemEncoding(), '?');
+	data = CFStringCreateExternalRepresentation(kCFAllocatorDefault, resultString, CFStringGetSystemEncoding(), '?');
 	
 	if (data != NULL) {
         if (logLevel == LogLevelError) {

@@ -9,12 +9,14 @@
 #import "DimensionizerPref.h"
 #import "BundleUserDefaults.h"
 
+NSString *PreferencesContext = @"PreferencesContext";
+
 
 @implementation DimensionizerPref
 
 
 + (void)initialize {
-    BundleUserDefaults *ud = [[BundleUserDefaults alloc] initWithPersistentDomainName: [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
+	BundleUserDefaults *ud = [[BundleUserDefaults alloc] initWithPersistentDomainName: [[NSBundle bundleForClass:[self class]] bundleIdentifier]];
     [[NSUserDefaultsController sharedUserDefaultsController] _setDefaults: ud];
     [ud release];
     
@@ -28,8 +30,8 @@
  */
 + (void)setupDefaults {
     NSDictionary *_defaultPreferences = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         [NSNumber numberWithInt: HTML], PRIMARY_OUTPUT_FORMAT_KEY,
-                                         [NSNumber numberWithInt: CSS], SECONDARY_OUTPUT_FORMAT_KEY,
+                                         [NSNumber numberWithInt: HTML], PRIMARY_OUTPUT_FORMAT,
+                                         [NSNumber numberWithInt: CSS], SECONDARY_OUTPUT_FORMAT,
                                          [NSArray array], PRIMARY_CUSTOM_FORMAT,
                                          [NSArray array], SECONDARY_CUSTOM_FORMAT,
                                          nil];
@@ -77,11 +79,23 @@
  @discussion We do this so we will get notifications when the user defaults values change.
  */
 - (void) registerAsObserver {
-	//NSLog(@"Registering as an observer to 'values'.");
+	//NSLog(@"Registering as an observer to 'values'...");
 	[[NSUserDefaultsController sharedUserDefaultsController] addObserver: self
-															  forKeyPath: @"values"
+															  forKeyPath: [NSString stringWithFormat: @"values.%@", PRIMARY_OUTPUT_FORMAT]
 																 options: (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-																 context: NULL];
+																 context: PreferencesContext];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver: self
+															  forKeyPath: [NSString stringWithFormat: @"values.%@", PRIMARY_CUSTOM_FORMAT]
+																 options: (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+																 context: PreferencesContext];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver: self
+															  forKeyPath: [NSString stringWithFormat: @"values.%@", SECONDARY_OUTPUT_FORMAT]
+																 options: (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+																 context: PreferencesContext];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver: self
+															  forKeyPath: [NSString stringWithFormat: @"values.%@", SECONDARY_CUSTOM_FORMAT]
+																 options: (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+																 context: PreferencesContext];
 }
 
 /*!
@@ -117,7 +131,10 @@
 - (void) unregisterForChangeNotification {
 	//NSLog(@"UN-registering as an observer to 'values'.");
 	@try {
-		[[NSUserDefaultsController sharedUserDefaultsController] removeObserver: self forKeyPath:@"values"];
+		[[NSUserDefaultsController sharedUserDefaultsController] removeObserver: self forKeyPath: [NSString stringWithFormat: @"values.%@", PRIMARY_OUTPUT_FORMAT]];
+		[[NSUserDefaultsController sharedUserDefaultsController] removeObserver: self forKeyPath: [NSString stringWithFormat: @"values.%@", PRIMARY_CUSTOM_FORMAT]];
+		[[NSUserDefaultsController sharedUserDefaultsController] removeObserver: self forKeyPath: [NSString stringWithFormat: @"values.%@", SECONDARY_OUTPUT_FORMAT]];
+		[[NSUserDefaultsController sharedUserDefaultsController] removeObserver: self forKeyPath: [NSString stringWithFormat: @"values.%@", SECONDARY_CUSTOM_FORMAT]];
 	}
 	@catch (NSException * e) {
 		NSLog(@"Couldn't unregister as an observer to 'values': %@", e);
@@ -138,25 +155,24 @@
                          change: (NSDictionary *)change
                         context: (void *)context
 {
-    //NSLog(@"observeValueForKeyPath called");
-    if ([keyPath isEqualToString: @"values"]) {
+    //NSLog(@"observeValueForKeyPath called with keyPath: %@ and context %@", keyPath, context);
+	if (context == PreferencesContext) {
         [[[NSUserDefaultsController sharedUserDefaultsController] defaults] synchronize];
-    }
-    
-    // Be sure to call the super implementation if the superclass implements it.
-    [super observeValueForKeyPath: keyPath
-                         ofObject: object
-                           change: change
-                          context: context];
+    } else {
+		// Be sure to call the super implementation if the superclass implements it.
+		[super observeValueForKeyPath: keyPath
+							 ofObject: object
+							   change: change
+							  context: context];
+	}
 }
 
 
-/*
+
 - (void) dealloc {
-    
     [super dealloc];
 }
- */
+ 
 
 
 /*
