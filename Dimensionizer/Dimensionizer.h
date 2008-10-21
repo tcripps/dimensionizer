@@ -14,6 +14,8 @@
 
 
 
+
+#pragma mark * Constants *
 // -----------------------------------------------------------------------------
 //  Constants
 // -----------------------------------------------------------------------------
@@ -37,6 +39,9 @@
 #define NAME_TOKEN CFSTR("^__NAME__^")
 
 
+
+#pragma mark -
+#pragma mark * typedefs *
 // -----------------------------------------------------------------------------
 //  typedefs
 // -----------------------------------------------------------------------------
@@ -69,6 +74,9 @@ typedef struct DimensionizerCMPlugin_struct {
 
 
 
+
+#pragma mark -
+#pragma mark * Function Declarations *
 // -----------------------------------------------------------------------------
 //  Function Declarations
 // -----------------------------------------------------------------------------
@@ -77,6 +85,9 @@ extern void *DimensionizerCMPlugIn_Factory(CFAllocatorRef allocator, CFUUIDRef t
 
 
 
+
+#pragma mark -
+#pragma mark * COM interface *
 /* COM interface */
 static HRESULT DimensionizerCMPlugIn_QueryInterface(void *thisInstance, REFIID iid, LPVOID *ppv);
 static ULONG DimensionizerCMPlugIn_AddRef(void *thisInstance);
@@ -84,12 +95,18 @@ static ULONG DimensionizerCMPlugIn_Release(void *thisInstance);
 
 
 
+
+#pragma mark -
+#pragma mark * COM utility functions *
 /* COM utility functions */
 static DimensionizerCMPlugIn_ptr DimensionizerCMPlugIn_Alloc(CFUUIDRef factoryID);
 static void DimensionizerCMPlugIn_Dealloc(DimensionizerCMPlugIn_ptr thisInstance);
 
 
 
+
+#pragma mark -
+#pragma mark * Contextual menu interface *
 /* Contextual menus interface */
 static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const AEDesc *context, AEDescList *outCommandPairs);
 static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc *context, SInt32 commandID);
@@ -97,6 +114,9 @@ static void  DimensionizerCMPlugIn_PostMenuCleanup(void *thisInstance);
 
 
 
+
+#pragma mark -
+#pragma mark * Main functions *
 /* Main functions */
 static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *commandList);
 
@@ -113,6 +133,9 @@ static int OutputFormatPreferenceForKey(const CFStringRef key);
 
 
 
+
+#pragma mark -
+#pragma mark * Utility functions *
 /* Utility functions */
 static Boolean DescIsOfTypeOrCanBeCoercedToType(const AEDesc *desc, OSType desiredType);
 
@@ -126,6 +149,9 @@ static void LogContext(const AEDescList *context);
 void fss2path(char *path, FSSpec *fss);
 
 
+
+#pragma mark -
+#pragma mark * Contextual Menu Interface function table *
 /* The Contextual Menu Interface function table. */
 static ContextualMenuInterfaceStruct gDimensionizerCMInterface =
 {

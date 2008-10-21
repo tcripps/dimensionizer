@@ -10,7 +10,7 @@
 #include "Dimensionizer.h"
 
 
-
+#pragma mark * Compilation directives *
 // -----------------------------------------------------------------------------
 //  Compilation directives
 // -----------------------------------------------------------------------------
@@ -21,7 +21,8 @@
 
 
 
-
+#pragma mark -
+#pragma mark * Defines *
 // -----------------------------------------------------------------------------
 //  Defines
 // -----------------------------------------------------------------------------
@@ -57,12 +58,15 @@ EventHandlerRef gMenuEventHandlerRef = NULL;
 CFMutableDictionaryRef gImageFileInfoDict = NULL;
 
 /* Controls the logging output level. */
-enum LogLevel gLogLevel = LogLevelDebug;
+enum LogLevel gLogLevel = LogLevelError;
+
+SInt32 gSubmenuCommandId = 200; // Need to be able to identify when the submenu's parent item is selected.
 
 
 
 
-
+#pragma mark -
+#pragma mark * Exported function implementations *
 // -----------------------------------------------------------------------------
 //  Exported function implementations
 // -----------------------------------------------------------------------------
@@ -100,7 +104,8 @@ void *DimensionizerCMPlugIn_Factory(CFAllocatorRef allocator, CFUUIDRef typeID) 
 
 
 
-
+#pragma mark -
+#pragma mark * COM interface *
 // -----------------------------------------------------------------------------
 //  COM interface
 // -----------------------------------------------------------------------------
@@ -210,6 +215,9 @@ static ULONG DimensionizerCMPlugIn_Release(void *thisInstance) {
 
 
 
+
+#pragma mark -
+#pragma mark * COM utility functions *
 // -----------------------------------------------------------------------------
 //  COM utility functions
 // -----------------------------------------------------------------------------
@@ -275,6 +283,9 @@ static void DimensionizerCMPlugIn_Dealloc(DimensionizerCMPlugIn_ptr thisInstance
 
 
 
+
+#pragma mark -
+#pragma mark * Contextual menus interface *
 // -----------------------------------------------------------------------------
 //  Contextual menus interface
 // -----------------------------------------------------------------------------
@@ -393,68 +404,100 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
     LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: commandID: %d\n"), commandID);
     LogString(LogLevelVerbose, CFSTR("DimensionizerCMPlugIn_HandleSelection: Raw AEDesc type: '%4.4s'\n"), (Ptr)&context->descriptorType);
 
-    
     OSStatus result = noErr;
-    
-    // Sequence the command ids
+	CFMutableStringRef theOutputString = CFStringCreateMutable(kCFAllocatorDefault, 0);
+	
+	// Sequence the command ids
     gNumCommandIDs = 0;
-    Boolean isMainCommandType = (commandID % 2 != 0);
-    SInt32 realCommandID = isMainCommandType ? commandID : commandID - 1;
-    LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: real commandID: %d\n"), realCommandID);
-    
-    CFNumberRef menuCommandID = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &realCommandID);
-    if (gImageFileInfoDict && CFDictionaryContainsKey(gImageFileInfoDict, menuCommandID)) {
-        LogString(LogLevelVerbose, CFSTR("DimensionizerCMPlugIn_HandleSelection: gImageFileInfoDict: %@\n"), gImageFileInfoDict);
-        
-        CFDictionaryRef imageInfoDict = CFDictionaryGetValue(gImageFileInfoDict, menuCommandID);
-        if (imageInfoDict) {
-            enum OutputFormat theFormat;
-            CFStringRef theOutputString;
-            int preferredFormat = -1;
-            
-            if (isMainCommandType) {
-                LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting primary output type preference.\n"));
-                preferredFormat = OutputFormatPreferenceForKey(PRIMARY_OUTPUT_FORMAT);
-                if (preferredFormat == -1) {
-                    theFormat = HTML;
-                } else {
-                    theFormat = preferredFormat;
-                }
-            } else {
-                LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting secondary output type preference.\n"));
-                preferredFormat = OutputFormatPreferenceForKey(SECONDARY_OUTPUT_FORMAT);
-                if (preferredFormat == -1) {
-                    theFormat = CSS;
-                } else {
-                    theFormat = preferredFormat;
-                }
-            }
-            
-            if (theFormat == Custom) {
-                theOutputString = CreateCustomOutputFormatStringFromImageInfoDictWithOutputType(imageInfoDict, isMainCommandType);
-            } else {
-                theOutputString = CreateStringFromImageInfoDictWithOutputFormat(imageInfoDict, theFormat);
-            }
-            
-            LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: theOutputString: %@\n"), theOutputString);
-            
-            if (theOutputString) {
-                PasteboardRef theClipboard;
-                result = PasteboardCreate(kPasteboardClipboard, &theClipboard);
-                if (result == noErr) {
-                    result = AddStringToPasteboard(theClipboard, theOutputString);
-                    LogString(LogLevelWarn, CFSTR("Error adding the output string to the clipboard: %d\n"), result);
-                }
-                
-                CFRelease(theOutputString);
-            }
-        } else {
-            LogString(LogLevelInfo, CFSTR("DimensionizerCMPlugIn_HandleSelection: Could not get dictionary for commandID key.\n"));
-        }
-        
-    }
-    
-    CFRelease(menuCommandID);
+    Boolean isPrimaryCommandType = (commandID % 2 != 0);
+	Boolean isSingleElement = true;
+	CFIndex numEntries = 1;
+	
+	if (commandID == gSubmenuCommandId || commandID == (gSubmenuCommandId + 1)) { // The submenu's parent menu item was selected.
+		numEntries = CFDictionaryGetCount(gImageFileInfoDict);
+		isSingleElement = false;
+	}
+
+	// Determine the expected output format.
+	enum OutputFormat theFormat;
+	int preferredFormat = -1;
+	
+	if (isPrimaryCommandType) {
+		LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting primary output type preference.\n"));
+		preferredFormat = OutputFormatPreferenceForKey(PRIMARY_OUTPUT_FORMAT);
+		if (preferredFormat == -1) {
+			theFormat = HTML;
+		} else {
+			theFormat = preferredFormat;
+		}
+	} else {
+		LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: getting secondary output type preference.\n"));
+		preferredFormat = OutputFormatPreferenceForKey(SECONDARY_OUTPUT_FORMAT);
+		if (preferredFormat == -1) {
+			theFormat = CSS;
+		} else {
+			theFormat = preferredFormat;
+		}
+	}
+	
+	SInt32 realCommandID;
+	if (isSingleElement) {
+		// The entry is shared between the primary and secondary command IDs for each menu item.  Since the dictionary is keyed
+		// by the command ID of the primary command, we have to compensate when the secondary command is chosen.
+		realCommandID = isPrimaryCommandType ? commandID : commandID - 1;
+	} else {
+		realCommandID = 1001;
+	}
+	LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: real commandID: %d\n"), realCommandID);
+
+	// Build the output string.
+	do {
+		CFNumberRef menuCommandID = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &realCommandID);
+		if (gImageFileInfoDict && CFDictionaryContainsKey(gImageFileInfoDict, menuCommandID)) {
+			LogString(LogLevelVerbose, CFSTR("DimensionizerCMPlugIn_HandleSelection: gImageFileInfoDict: %@\n"), gImageFileInfoDict);
+
+			CFDictionaryRef imageInfoDict = CFDictionaryGetValue(gImageFileInfoDict, menuCommandID);
+			if (imageInfoDict) {
+				if (theFormat == Custom) {
+					CFStringAppend(theOutputString, CreateCustomOutputFormatStringFromImageInfoDictWithOutputType(imageInfoDict, isPrimaryCommandType));
+				} else {
+					CFStringAppend(theOutputString, CreateStringFromImageInfoDictWithOutputFormat(imageInfoDict, theFormat));
+				}
+				
+				if (numEntries > 1) {
+					CFStringAppend(theOutputString, CFSTR("\n"));
+				}
+			} else {
+				LogString(LogLevelInfo, CFSTR("DimensionizerCMPlugIn_HandleSelection: Could not get dictionary for commandID key.\n"));
+			}
+		}
+		
+		CFRelease(menuCommandID);
+		if (!isSingleElement) {
+			realCommandID++;
+		}
+		
+	} while (--numEntries > 0);
+	
+	LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: theOutputString: %@\n"), theOutputString);
+	
+	// Place the output onto the pasteboard.
+	if (theOutputString) {
+		if (CFStringGetLength(theOutputString) > 0) {
+			PasteboardRef theClipboard;
+			result = PasteboardCreate(kPasteboardClipboard, &theClipboard);
+			if (result == noErr) {
+				result = AddStringToPasteboard(theClipboard, theOutputString);
+				if (result == noErr) {
+					LogString(LogLevelWarn, CFSTR("Error adding the output string to the clipboard: %d\n"), result);
+				}
+			} else {
+				LogString(LogLevelWarn, CFSTR("Error accessing the pasteboard: %d\n"), result);
+			}
+		}
+		
+		CFRelease(theOutputString);
+	}
 
     return noErr;
 }   /* DimensionizerCMPlugIn_HandleSelection */
@@ -495,6 +538,9 @@ static void DimensionizerCMPlugIn_PostMenuCleanup(void *thisInstance) {
 
 
 
+
+#pragma mark -
+#pragma mark * Main functions *
 // -----------------------------------------------------------------------------
 //  Main functions
 // -----------------------------------------------------------------------------
@@ -568,16 +614,14 @@ static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *com
                     CFStringRef menuCommandName = CreateStringFromImageInfoDictWithOutputFormat(anImageInfoDict, Menu);
                     LogString(LogLevelDebug, CFSTR("CreateMenuWithWithContext: menuCommandName: %@\n"), menuCommandName);
                                         
-                    // Add the menu item to the contextual menu.
+                    // Add the menu item to the contextual menu. 
+					// We must set the kMenuItemAttrNotPreviousAlternate attribute to signal that this is a new dynamic group.
                     SInt32 commandIDNumber = 1000 + (++gNumCommandIDs);
-                    result = InsertCommandIntoCommandListWithOptionsSubmenu(menuCommandName, commandIDNumber, &theSubMenuCommands, kMenuItemAttrDynamic, kMenuNoModifiers, NULL);
+                    result = InsertCommandIntoCommandListWithOptionsSubmenu(menuCommandName, commandIDNumber, &theSubMenuCommands, kMenuItemAttrDynamic | kMenuItemAttrNotPreviousAlternate, kMenuNoModifiers, NULL);
                     
                     // Add alt menu item
                     SInt32 altCommandIDNumber = 1000 + (++gNumCommandIDs);
                     result = InsertCommandIntoCommandListWithOptionsSubmenu(menuCommandName, altCommandIDNumber, &theSubMenuCommands, kMenuItemAttrDynamic, kMenuOptionModifier, NULL);
-					
-					// Have to add a hidden item in order to break the dynamic menu item sequence.  Retarded hack.
-					result = InsertCommandIntoCommandListWithOptionsSubmenu(CFSTR("Hidden Item"), 0, &theSubMenuCommands, kMenuItemAttrHidden, kMenuNoModifiers, NULL);
                     
                     // Add this image info dict to the global image file info dict keyed by the menu item's command id.
                     CFNumberRef menuCommandID = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &commandIDNumber);
@@ -600,8 +644,11 @@ static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *com
                                                                       CFSTR("%d images selected."), 
                                                                       numImages);
             
-            result = InsertCommandIntoCommandListWithOptionsSubmenu(superCommandString, 0, commandList, 0, kMenuNoModifiers, &theSubMenuCommands);
-            CFRelease(superCommandString);
+            result = InsertCommandIntoCommandListWithOptionsSubmenu(superCommandString, gSubmenuCommandId, commandList, kMenuItemAttrSubmenuParentChoosable | kMenuItemAttrDynamic, kMenuNoModifiers, &theSubMenuCommands);
+            
+			//result = InsertCommandIntoCommandListWithOptionsSubmenu(superCommandString, (gSubmenuCommandId + 1), commandList, kMenuItemAttrSubmenuParentChoosable | kMenuItemAttrDynamic, kMenuOptionModifier, NULL);
+			
+			CFRelease(superCommandString);
         }
         
         if (imageInfoDictsArray) {
@@ -977,21 +1024,12 @@ static Boolean InsertCommandIntoCommandListWithOptionsSubmenu(CFStringRef comman
     }
     
     if ( gHasAttributeAndModifierKeys ) {
-        
-		if ((MenuItemAttributes)NULL == attributes) {
-			attributes = kMenuItemAttrSubmenuParentChoosable;
-		} else {
-			if (attributes != 0) { // We use 0 for the parent submenu item.
-				attributes |= kMenuItemAttrSubmenuParentChoosable;
-			}
-		}
-				
-        //if (attributes != (MenuItemAttributes)NULL && attributes != 0) {
+        if (attributes != (MenuItemAttributes)NULL && attributes != 0) {
 			// Stick the attributes into the AERecord.
             LogString(LogLevelVerbose, CFSTR("InsertCommandIntoCommandListWithOptionsSubmenu: Adding attributes to apple event record."));
             err = AEPutKeyPtr(&commandRecord, keyContextualMenuAttributes, typeSInt32, &attributes, sizeof(attributes));
             require_noerr(err, InsertCommandIntoCommandListWithOptionsSubmenu_fail );
-        //}
+        }
         
         // Stick the modifiers into the AERecord.
         if (modifiers != (UInt32)NULL && modifiers != 0) {
@@ -1119,7 +1157,8 @@ static int OutputFormatPreferenceForKey(const CFStringRef key) {
 
 
 
-
+#pragma mark -
+#pragma mark * Utility functions *
 // -----------------------------------------------------------------------------
 //  Utility functions
 // -----------------------------------------------------------------------------
