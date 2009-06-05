@@ -3,7 +3,7 @@
 //  DimensionizerPreferencePane
 //
 //  Created by Travis Cripps on 2/8/08.
-//  Copyright (c) 2008 Hivelogic. All rights reserved.
+//  Copyright (c) 2008 Travis Cripps. All rights reserved.
 //
 
 #import <PreferencePanes/PreferencePanes.h>

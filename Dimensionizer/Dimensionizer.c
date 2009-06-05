@@ -3,7 +3,7 @@
  *  Dimensionizer
  *
  *  Created by Travis Cripps on 1/16/08.
- *  Copyright 2008 Hivelogic. All rights reserved.
+ *  Copyright 2008 Travis Cripps. All rights reserved.
  *
  */
 
@@ -88,9 +88,9 @@ void *DimensionizerCMPlugIn_Factory(CFAllocatorRef allocator, CFUUIDRef typeID) 
 #if LOG_ENTRY_POINTS
     printf("DimensionizerCMPlugIn_Factory(%p, %p)\n", allocator, typeID); fflush(stdout);
 #endif LOG_ENTRY_POINTS
-
+	
     void *result = NULL;
-
+	
     // If correct type is being requested, allocate an
     // instance of TestType and return the IUnknown interface.
     if (CFEqual(typeID, kContextualMenuTypeID)) {
@@ -128,24 +128,24 @@ static HRESULT DimensionizerCMPlugIn_QueryInterface(void *thisInstance, REFIID i
     printf("DimensionizerCMPlugIn_QueryInterface(%p, %p, %p)\n", thisInstance, &iid, ppv);
     fflush(stdout);
 #endif
-
+	
     HRESULT result = S_OK;  // assume success
     
     // Create a CoreFoundation UUIDRef for the requested interface.
     CFUUIDRef interfaceID = CFUUIDCreateFromUUIDBytes(NULL, iid);
-
+	
     // Test the requested ID against the valid interfaces.
     if (CFEqual(interfaceID, kContextualMenuInterfaceID)) {
         // If our interface was requested, bump the ref count, set the ppv parameter equal to the 
         // instance, and return good status.
         DimensionizerCMPlugIn_AddRef(thisInstance);
-
+		
         *ppv = thisInstance;
         CFRelease(interfaceID);
     } else if (CFEqual(interfaceID, IUnknownUUID)) {
         // If the IUnknown interface was requested, same as above.
         DimensionizerCMPlugIn_AddRef(thisInstance);
-
+		
         *ppv = thisInstance;
         CFRelease(interfaceID);
     } else {
@@ -194,12 +194,12 @@ static ULONG DimensionizerCMPlugIn_AddRef(void *thisInstance) {
  * Returns:  ULONG - the reference count of the instance of the plugin
  */
 static ULONG DimensionizerCMPlugIn_Release(void *thisInstance) {
-
+	
 #if LOG_ENTRY_POINTS
     printf("DimensionizerCMPlugIn_Release(%p)\n", thisInstance);
     fflush(stdout);
 #endif
-
+	
     ULONG result = 0;
     
     ((DimensionizerCMPlugIn_ptr)thisInstance)->refCount -= 1;
@@ -303,7 +303,7 @@ static void DimensionizerCMPlugIn_Dealloc(DimensionizerCMPlugIn_ptr thisInstance
  * Returns:  OSStatus - the error code
  */
 static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const AEDesc *context, AEDescList *outCommandPairs) {
-
+	
 #if LOG_ENTRY_POINTS
     printf("DimensionizerCMPlugIn_ExamineContext(%p, %p, %p)\n", thisInstance, context, outCommandPairs);
     fflush(stdout);
@@ -312,7 +312,7 @@ static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const A
     if (gLogLevel >= LogLevelDebug) {
         LogContext(context);
     }
-
+	
     OSStatus result = noErr;
     
 #if FINDER_ONLY
@@ -335,17 +335,17 @@ static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const A
 #endif
     
     /*
-    // Install Carbon (menu) event handler
-    const EventTypeSpec menuEvents[] = {
-        {kEventClassMenu, kEventMenuPopulate},
-    };
-
-    if (!gMenuEventHandlerUPP) {
-        gMenuEventHandlerUPP = NewEventHandlerUPP(MenuEvent_Handle);
-    }
-    InstallApplicationEventHandler(gMenuEventHandlerUPP, GetEventTypeCount(menuEvents), menuEvents, NULL, &gMenuEventHandlerRef);
+	 // Install Carbon (menu) event handler
+	 const EventTypeSpec menuEvents[] = {
+	 {kEventClassMenu, kEventMenuPopulate},
+	 };
+	 
+	 if (!gMenuEventHandlerUPP) {
+	 gMenuEventHandlerUPP = NewEventHandlerUPP(MenuEvent_Handle);
+	 }
+	 InstallApplicationEventHandler(gMenuEventHandlerUPP, GetEventTypeCount(menuEvents), menuEvents, NULL, &gMenuEventHandlerRef);
      */
-
+	
     // Initialize the command id sequence
     gNumCommandIDs = 0;
     gImageFileInfoDict = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -359,7 +359,7 @@ static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const A
         gHasAttributeAndModifierKeys = false;
         LogString(LogLevelInfo, CFSTR("DimensionizerCMPlugIn_ExamineContext: CMM does not support Attributes and Modifiers keys.\n"));
     }
-
+	
     // Make sure the descriptor isn't null.
     if (context) {
         //LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_ExamineContext: Raw AEDesc type: '%4.4s'\n"), (Ptr) &context->descriptorType);
@@ -368,13 +368,13 @@ static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const A
             CreateMenuWithWithContext(context, outCommandPairs);
         }
     }
-
+	
     if (gLogLevel >= LogLevelDebug) {
         LogContext(outCommandPairs);
     }
-
+	
     fflush(stdout);
-
+	
     return noErr;
 }   /* DimensionizerCMPlugIn_ExamineContext */
 
@@ -392,10 +392,10 @@ static OSStatus DimensionizerCMPlugIn_ExamineContext(void *thisInstance, const A
  * Returns:  OSStatus - the error code
  */
 static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc *context, SInt32 commandID) {
-
+	
 #if LOG_ENTRY_POINTS
     printf("\nDimensionizerCMPlugIn_->DimensionizerCMPlugIn_HandleSelection(instance: %p, context: %p, commandID: 0x%08lX)\n",
-            thisInstance, context, commandID);
+		   thisInstance, context, commandID);
 #endif LOG_ENTRY_POINTS
     
     if (LogLevelDebug < gLogLevel) {
@@ -403,7 +403,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
     }
     LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: commandID: %d\n"), commandID);
     LogString(LogLevelVerbose, CFSTR("DimensionizerCMPlugIn_HandleSelection: Raw AEDesc type: '%4.4s'\n"), (Ptr)&context->descriptorType);
-
+	
     OSStatus result = noErr;
 	CFMutableStringRef theOutputString = CFStringCreateMutable(kCFAllocatorDefault, 0);
 	
@@ -417,7 +417,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
 		numEntries = CFDictionaryGetCount(gImageFileInfoDict);
 		isSingleElement = false;
 	}
-
+	
 	// Determine the expected output format.
 	enum OutputFormat theFormat;
 	int preferredFormat = -1;
@@ -449,13 +449,13 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
 		realCommandID = 1001;
 	}
 	LogString(LogLevelDebug, CFSTR("DimensionizerCMPlugIn_HandleSelection: real commandID: %d\n"), realCommandID);
-
+	
 	// Build the output string.
 	do {
 		CFNumberRef menuCommandID = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &realCommandID);
 		if (gImageFileInfoDict && CFDictionaryContainsKey(gImageFileInfoDict, menuCommandID)) {
 			LogString(LogLevelVerbose, CFSTR("DimensionizerCMPlugIn_HandleSelection: gImageFileInfoDict: %@\n"), gImageFileInfoDict);
-
+			
 			CFDictionaryRef imageInfoDict = CFDictionaryGetValue(gImageFileInfoDict, menuCommandID);
 			if (imageInfoDict) {
 				if (theFormat == Custom) {
@@ -498,7 +498,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
 		
 		CFRelease(theOutputString);
 	}
-
+	
     return noErr;
 }   /* DimensionizerCMPlugIn_HandleSelection */
 
@@ -514,7 +514,7 @@ static OSStatus DimensionizerCMPlugIn_HandleSelection(void *thisInstance, AEDesc
  * Returns:  void
  */
 static void DimensionizerCMPlugIn_PostMenuCleanup(void *thisInstance) {
-
+	
 #if LOG_ENTRY_POINTS
     printf("DimensionizerCMPlugIn_PostMenuCleanup(instance: %p)\n", thisInstance);
 #endif LOG_ENTRY_POINTS
@@ -546,16 +546,16 @@ static void DimensionizerCMPlugIn_PostMenuCleanup(void *thisInstance) {
 // -----------------------------------------------------------------------------
 
 /*****************************************************
-*
-* Routine:  CreateMenuWithWithContext(context, commandList)
-*
-* Purpose:  Create a menu with the item(s) in the context and put into the commandList
-*
-* Inputs:   context - AEDesc from the menu event
-*           commandList - AEDescList of commands to which we append our menu command(s)
-*
-* Returns:  OSStatus - error code
-*/
+ *
+ * Routine:  CreateMenuWithWithContext(context, commandList)
+ *
+ * Purpose:  Create a menu with the item(s) in the context and put into the commandList
+ *
+ * Inputs:   context - AEDesc from the menu event
+ *           commandList - AEDescList of commands to which we append our menu command(s)
+ *
+ * Returns:  OSStatus - error code
+ */
 static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *commandList)
 {
     OSStatus result = noErr;
@@ -613,7 +613,7 @@ static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *com
                 if (anImageInfoDict) {
                     CFStringRef menuCommandName = CreateStringFromImageInfoDictWithOutputFormat(anImageInfoDict, Menu);
                     LogString(LogLevelDebug, CFSTR("CreateMenuWithWithContext: menuCommandName: %@\n"), menuCommandName);
-                                        
+					
                     // Add the menu item to the contextual menu. 
 					// We must set the kMenuItemAttrNotPreviousAlternate attribute to signal that this is a new dynamic group.
                     SInt32 commandIDNumber = 1000 + (++gNumCommandIDs);
@@ -656,16 +656,16 @@ static OSStatus CreateMenuWithWithContext(const AEDesc *context, AEDescList *com
         }
     }
     
-
-// clean up after ourself
+	
+	// clean up after ourself
 CreateMenuWithWithContext_fail:    ;
     AEDisposeDesc(&theSubMenuCommands);
     //AEDisposeDesc(&theSupercommand);
     
     
 CreateMenuWithWithContext_Complete_fail:
-        return result;
-
+	return result;
+	
 } /* CreateMenuWithWithContext */
 
 
@@ -698,18 +698,18 @@ static CFArrayRef GetImageInfoForQualifiedItems(const AEDesc *inContext) {
             FSRef theFSRef;
             Size dataSize = AEGetDescDataSize(&theAEDesc);
             /*
-            if (AECoerceDesc(inContext, typeFSRef, &theAEDesc) == noErr) {
-                LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Item %ld coerced to an FSRef type.\n"), i);
-                
-                result = AEGetDescData(&theAEDesc, &theFSRef, dataSize);
-                if (noErr != result) {
-                    LogString(LogLevelWarn, CFSTR("GetImageInfoForQualifiedItems: Could not resolve FSRef for item %d.\n"), i);
-                    continue; 
-                }
-            } else {
-                LogString(LogLevelWarn, CFSTR("GetImageInfoForQualifiedItems: Could not coerce item %d to an FSRef type.\n"), i);
-            }
-            */
+			 if (AECoerceDesc(inContext, typeFSRef, &theAEDesc) == noErr) {
+			 LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Item %ld coerced to an FSRef type.\n"), i);
+			 
+			 result = AEGetDescData(&theAEDesc, &theFSRef, dataSize);
+			 if (noErr != result) {
+			 LogString(LogLevelWarn, CFSTR("GetImageInfoForQualifiedItems: Could not resolve FSRef for item %d.\n"), i);
+			 continue; 
+			 }
+			 } else {
+			 LogString(LogLevelWarn, CFSTR("GetImageInfoForQualifiedItems: Could not coerce item %d to an FSRef type.\n"), i);
+			 }
+			 */
             
             if (theAEDesc.descriptorType == typeFSRef) {
                 LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Item %ld is an FSRef.\n"), i);
@@ -739,7 +739,7 @@ static CFArrayRef GetImageInfoForQualifiedItems(const AEDesc *inContext) {
                             LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Alias resolved to URL for FSRef: %@.\n"), url);
                             CFRelease(url);
                         } else {
-                          LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Alias resolved to URL for FSRef: %@.\n"), url);
+							LogString(LogLevelDebug, CFSTR("GetImageInfoForQualifiedItems: Alias resolved to URL for FSRef: %@.\n"), url);
                         }
                         
                     }
@@ -877,8 +877,8 @@ static CFStringRef CreateStringFromImageInfoDictWithOutputFormat(CFDictionaryRef
                                                         NULL, 
                                                         CFSTR(MENU_FORMAT_STRING), 
                                                         fileName,
+														width,
                                                         height,
-                                                        width,
                                                         resolution);
                 break;
             case HTML:
@@ -930,10 +930,10 @@ static CFStringRef CreateCustomOutputFormatStringFromImageInfoDictWithOutputType
         
         // Make sure we always have the latest values.
         CFPreferencesAppSynchronize(kDimensionizerCMPBundleIdentifier);
-    
+		
         // Need the array from prefs and need to know if it's primary or secondary in order to get it.
         CFArrayRef customFormatParts;
-
+		
         if (isMainType) {
             CFPropertyListRef value = CFPreferencesCopyAppValue(PRIMARY_CUSTOM_FORMAT, kDimensionizerCMPBundleIdentifier);
             if (value && CFGetTypeID(value) == CFArrayGetTypeID()) {
@@ -1130,7 +1130,7 @@ static int OutputFormatPreferenceForKey(const CFStringRef key) {
 	
     // Look for the preference.
     CFPropertyListRef outputTypePref = CFPreferencesCopyAppValue(key, kDimensionizerCMPBundleIdentifier);
-
+	
     // If the preference exists,  read it.
     if (outputTypePref) {
         if (CFGetTypeID(outputTypePref) == CFNumberGetTypeID()) {
@@ -1358,8 +1358,7 @@ static void LogContext(const AEDescList *context) {
 
 
 //fss2path takes the FSSpec of a file, folder or volume and returns its path 
-void fss2path(char *path, FSSpec *fss)
-{
+void fss2path(char *path, FSSpec *fss) {
     int l;             //fss->name contains name of last item in path
     for(l=0; l<(fss->name[0]); l++) path[l] = fss->name[l + 1]; 
     path[l] = 0;

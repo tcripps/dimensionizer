@@ -3,7 +3,7 @@
 //  DimensionizerPreferencePane
 //
 //  Created by Travis Cripps on 2/8/08.
-//  Copyright (c) 2008 Hivelogic. All rights reserved.
+//  Copyright (c) 2008 Travis Cripps. All rights reserved.
 //
 
 #import "DimensionizerPref.h"
@@ -172,33 +172,33 @@ NSString *PreferencesContext = @"PreferencesContext";
 - (void) dealloc {
     [super dealloc];
 }
- 
+
 
 
 /*
-- (NSArray *) tokenField: (NSTokenField *)tokenField shouldAddObjects: (NSArray *)tokens atIndex: (unsigned)index {
-	//NSLog(@"shouldAddObjects");
-	NSEnumerator* enumerator = [tokens objectEnumerator];
-	id anObject;
-	
-	int i = 0;
-	while (anObject = [enumerator nextObject]) {
-		// code to act on each element as it is returned
-		//NSLog(@"%d: %@", i++, [anObject description]);
-	}
-    
-	return tokens; //array
-}
-*/
+ - (NSArray *) tokenField: (NSTokenField *)tokenField shouldAddObjects: (NSArray *)tokens atIndex: (unsigned)index {
+ //NSLog(@"shouldAddObjects");
+ NSEnumerator* enumerator = [tokens objectEnumerator];
+ id anObject;
+ 
+ int i = 0;
+ while (anObject = [enumerator nextObject]) {
+ // code to act on each element as it is returned
+ //NSLog(@"%d: %@", i++, [anObject description]);
+ }
+ 
+ return tokens; //array
+ }
+ */
 
 /*!
-    @function
-    @abstract   NSTokenField delegate method that determines the display string for a token.
-    @discussion 
-    @param      tokenField that is invoking the method
-	@param      representedObject the token to represent
-    @result     the string that should be displayed for the token
-*/
+ @function
+ @abstract   NSTokenField delegate method that determines the display string for a token.
+ @discussion 
+ @param      tokenField that is invoking the method
+ @param      representedObject the token to represent
+ @result     the string that should be displayed for the token
+ */
 - (NSString *) tokenField: (NSTokenField *)tokenField displayStringForRepresentedObject: (id)representedObject {
 	//NSLog(@"displayStringForRepresentedObject");
 	NSString *string;

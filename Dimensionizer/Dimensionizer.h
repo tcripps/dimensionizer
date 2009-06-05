@@ -3,7 +3,7 @@
  *  Dimensionizer
  *
  *  Created by Travis Cripps on 1/16/08.
- *  Copyright 2008 Hivelogic. All rights reserved.
+ *  Copyright 2008 Travis Cripps. All rights reserved.
  *
  */
 
@@ -20,7 +20,7 @@
 //  Constants
 // -----------------------------------------------------------------------------
 
-#define kDimensionizerCMPBundleIdentifier CFSTR("com.hivelogic.Dimensionizer")
+#define kDimensionizerCMPBundleIdentifier CFSTR("is.trav.Dimensionizer")
 
 #define kDimensionizerCMPlugIn_FactoryID (CFUUIDGetConstantUUIDWithBytes(NULL, \
 0xD5, 0x7A, 0xA7, 0x59, 0x30, 0xC3, 0x46, 0x4A, \
@@ -155,18 +155,18 @@ void fss2path(char *path, FSSpec *fss);
 /* The Contextual Menu Interface function table. */
 static ContextualMenuInterfaceStruct gDimensionizerCMInterface =
 {
-    // Required padding for COM
-    NULL, 
-    
-    // These three are the required COM functions
-    DimensionizerCMPlugIn_QueryInterface, 
-    DimensionizerCMPlugIn_AddRef, 
-    DimensionizerCMPlugIn_Release, 
-    
-    // Interface implementation
-    DimensionizerCMPlugIn_ExamineContext, 
-    DimensionizerCMPlugIn_HandleSelection, 
-    DimensionizerCMPlugIn_PostMenuCleanup
+// Required padding for COM
+NULL, 
+
+// These three are the required COM functions
+DimensionizerCMPlugIn_QueryInterface, 
+DimensionizerCMPlugIn_AddRef, 
+DimensionizerCMPlugIn_Release, 
+
+// Interface implementation
+DimensionizerCMPlugIn_ExamineContext, 
+DimensionizerCMPlugIn_HandleSelection, 
+DimensionizerCMPlugIn_PostMenuCleanup
 };
 
 
